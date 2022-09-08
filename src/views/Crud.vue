@@ -5,23 +5,23 @@
                 <h3> Add New movie </h3>
                     <div>
                         <label>Title</label>
-                        <input class="form-control" id="title" v-model="Movie.title">
+                        <input class="form-control" id="title" v-model="Movie.title" required>
                     </div>
                     <div>
                         <label>Year of release</label>
-                        <input class="form-control" id="year_of_release" v-model="Movie.year_of_release">
+                        <input class="form-control" id="year_of_release" v-model="Movie.year_of_release" required>
                     </div>
                     <div>
                         <label>Rating</label>
-                        <input class="form-control" id="rating" v-model="Movie.rating">
+                        <input class="form-control" id="rating" v-model="Movie.rating" required>
                     </div>
                     <div>
                         <label>Is it trending</label>
-                        <input class="form-control" id="is_trending" v-model="Movie.isTrending">
+                        <input class="form-control" id="is_trending" v-model="Movie.isTrending" required>
                     </div>
                     <div>
                         <label> Length in minutes </label>
-                        <input class="form-control" id="length_in_minutes" v-model="Movie.length_in_minutes">
+                        <input class="form-control" id="length_in_minutes" v-model="Movie.length_in_minutes" required>
                     </div>
                     
                     <br> 
@@ -49,6 +49,10 @@
 
 
 <script>
+
+import axios from 'axios';
+import { mapActions,  mapState } from 'vuex';
+
     
     export default {
       name: 'Crud',
@@ -56,11 +60,15 @@
       data() {
         return {
           Movie : {title: '', year_of_release: '', rating: '', isTrending: '', length_in_minutes: '' },
-          movies: [],
+         // movies: [],
         }
       },
     
       methods: {
+
+        ...mapActions([
+      'loadAllMovies'
+      ]),
 
         refreshPage(){
           window.location.reload();
@@ -95,40 +103,47 @@
             }
             console.log(newMovie);
 
-            let headers = {
-              method:'POST',
-              mode: 'no-cors',
-            
-              headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'test': 'b'
-                
-              },
-              body:JSON.stringify({a:"b"})
-            };
-
-            console.log(headers);
-
-            fetch('http://localhost:8000/admin/movies' , headers
-            ).then(response => console.log(response))
-          // .then((body) => {
-          //    const reader = body.getReader();
-          //    console.log(reader)
-        // },
+      //       fetch('http://localhost:8000/admin/movies' , {
+      //         method: 'POST',
+      //         mode: 'no-cors',
+      //           headers: { 'Content-Type': 'application/json' },
+      //           body: JSON.stringify(newMovie)
+      //         }).then(res => res.json().then(data => newMovie))
         
+      // },
+      axios.post('http://localhost:8000/admin/movies' , newMovie,{
+        mode: 'no-cors',
+       // headers: { 'Content-Type': 'application/json' }
+      })
+              .then((response) => {
+                 console.log(response);
+
+              })
+              .catch((error) => {
+                 console.log(error);
+              })
+          },
+
+
+        // loadAllMovies(){
+
+        //   fetch('http://localhost:8000/admin/movies/', this.movies ,{
+        //       method: "GET",   
+        //       mode: 'no-cors'
+        //   })
+        //   .then(response => response.json())
+        //     .then(res => { 
+        //       //console.log(res) 
+        //       this.movies = res;
+        //     })
+        // }
       },
 
-        loadAllMovies(){
+      computed: {
 
-          fetch('http://localhost:8000/admin/movies/', this.movies ,{
-              method: "GET",   
-          })
-          .then(response => response.json())
-            .then(res => {  
-              this.movies = res;
-            })
-        }
-      },
+      ...mapState([
+        'movies'
+      ])  },
     
       mounted() {
         this.loadAllMovies()

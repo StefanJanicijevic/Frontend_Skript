@@ -5,16 +5,19 @@
 
       <div class="ms-auto">
         <center>
-        <router-link to="/">Home</router-link> 
+        <router-link v-if="!token" to="/">Home</router-link> 
         </center>    
         <center>
-        <router-link to="/login">Login</router-link> 
+        <router-link v-if="!token" to="/login">Login</router-link> 
         </center>
         <center>
-        <router-link to="/register">Register</router-link> 
+        <router-link v-if="!token" to="/register">Register</router-link> 
         </center>
         <center>
-        <router-link to="/crud">CRUD ZEZANJE</router-link> 
+        <router-link to="/crud">CRUD</router-link> 
+        </center>
+        <center>
+        <router-link to="/socket">Socket</router-link> 
         </center>
       </div>
     
@@ -23,7 +26,39 @@
   </div>
 </template>
 
+<script>
 
+  import { mapState, mapMutations } from 'vuex';
+  
+  
+  export default {
+    name: 'App',
+  
+    computed: {
+      ...mapState([
+        'token',
+      ])
+    },
+  
+    mounted() {
+  
+      if (localStorage.token) {
+        this.setToken(localStorage.token);
+      }
+    },
+  
+    methods: {
+      ...mapMutations([
+        'setToken'
+      ]),
+    
+    },
+  
+  
+  
+  }
+  </script>
+  
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -3,16 +3,55 @@
 <div class="wrapper fadeInDown">
 
   <div id="formContent">
-
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <!-- onsubmit="return validateForm()" -->
+    <form name="myForm" >
+      <input type="text" id="username" class="fadeIn second" v-model = "username" name="username" placeholder="username" >
+      <input type="text" id="password" class="fadeIn third" v-model = "password" name="password" placeholder="password">
+      <input type="submit"  @click="onLogin()" class="fadeIn fourth" value="Submit">
     </form>
 
   </div>
 </div>
 </template>
+
+<script>
+  
+  import { mapActions } from 'vuex';
+  
+  export default {
+    name: 'Login',
+
+
+    data() {
+      return {
+          username: '',
+          password: ''
+      }
+    },
+  
+    methods: {
+        ...mapActions([
+          'login'
+        ]),
+
+        validateForm() {
+          let x = document.getElementById('name').value;
+          if (x == "") {
+          alert("Name must be filled out");
+         // return false;
+          }
+        },
+  
+        onLogin() {
+
+  
+          this.login({username: this.username, password: this.password});
+          this.$router.push({name: 'Crud'})
+  
+        }
+     }   
+  }
+  </script>
 
 <style scoped>
 

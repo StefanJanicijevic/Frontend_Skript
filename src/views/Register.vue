@@ -37,7 +37,7 @@
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="email" id="useremailname"  placeholder="Enter your Email"/>
+                                <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group ">
-                        <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                        <button type="button" @click="registerUser()" class="btn btn-primary btn-lg btn-block login-button">Register</button>
                     </div>
                 
                 </form>
@@ -64,9 +64,88 @@
 </body>
 </template>
 
+<script>
+    import { mapActions } from 'vuex';
+    
+    export default {
+      name: 'Register',
+    
+      data() {
+        return {
+          user: {
+            name: '',
+            last_name: '',
+            email: '',
+            password: '',
+          }
+        }
+      },
+  
+      methods: {
+
+        ...mapActions([
+        'register'
+        ]),
+        
+        registerUser() {
+        this.register({
+            name: document.getElementById("name").value,
+            last_name: document.getElementById("last_name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        });
+        console.log(this.name)
+        this.$router.push({name: 'Crud'})
+      }
+
+        
+        // registerUser(){
+        //     let newUser = {
+        //         name : document.getElementById('name').value,
+        //         last_name : document.getElementById('last_name').value,
+        //         email : document.getElementById('email').value,
+        //         password : document.getElementById('password').value,
+        //     }
+
+        //     console.log(newUser)
+        //     fetch('http://localhost:8000/admin/users/register', {
+        //         method: 'POST',
+        //         mode: 'no-cors',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(newUser),
+        //     }).then(res => res.json())
+        //       .then(res => {
+        //        console.log(res)
+                
+        //     })
+        // }
+        },
+
+//         login(obj) {
+      
+//       fetch('http://localhost:8000/admin/auth/login', {
+//           method: 'POST',
+//           mode: 'no-cors',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify(obj)
+//       }).then(res => res.json())
+//         .then(res => {
+//           if (res.msg) {alert('Invalid email or password.')}
+//           else {
+//               setToken(res.token);
+//     }
+//   })
+// }
+
+        
+    
+    }
+  </script>
+
+
+
+
 <style scoped>
-
-
 body, html{
      height: 100%;
  	background-repeat: no-repeat;

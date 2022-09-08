@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Crud from '@/views/Crud.vue';
+import Socket from '@/views/Socket.vue';
 
 
 Vue.use(VueRouter)
@@ -28,6 +29,11 @@ const routes = [
     path: '/crud',
     name: 'Crud',
     component: Crud
+  },
+  {
+    path: '/socket',
+    name: 'Socket',
+    component: Socket
   }
 ]
 
